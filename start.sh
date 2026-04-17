@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # ============================================================
 # ComfyUI Startup Script for RunPod
 # ============================================================
@@ -34,7 +33,23 @@ else
     echo "No network volume detected, using local storage"
 fi
 
+# Start JupyterLab in the background
+echo "=========================================="
+echo " Starting JupyterLab..."
+echo "=========================================="
+jupyter lab \
+    --ip=0.0.0.0 \
+    --port=8888 \
+    --no-browser \
+    --allow-root \
+    --NotebookApp.token='' \
+    --NotebookApp.password='' \
+    --notebook-dir=/workspace \
+    &
+
 # Start ComfyUI
-echo "Launching ComfyUI on port 8188..."
+echo "=========================================="
+echo " Starting ComfyUI..."
+echo "=========================================="
 cd /workspace/ComfyUI
 python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header
