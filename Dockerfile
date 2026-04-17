@@ -199,9 +199,13 @@ RUN git clone https://github.com/sonnybox/ComfyUI-SuperNodes.git \
 # ── Clear GitHub token from git config ───────────────────────
 RUN git config --global --unset-all url."https://${GITHUB_TOKEN}@github.com/".insteadOf || true
 
+# ── JupyterLab ───────────────────────────────────────────────
+RUN python3.12 -m pip install jupyterlab
+
 # ── Start script ─────────────────────────────────────────────
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
 EXPOSE 8188
+EXPOSE 8888
 CMD ["/start.sh"]
