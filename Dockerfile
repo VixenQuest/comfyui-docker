@@ -40,15 +40,15 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12 && \
     python3.12 -m pip install --upgrade pip
 
-# ── PyTorch 2.9 + CUDA 12.8 ──────────────────────────────────
-RUN python3.12 -m pip install torch==2.9.0 torchvision torchaudio \
+# ── PyTorch 2.7 + CUDA 12.8 ──────────────────────────────────
+RUN python3.12 -m pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 \
     --index-url https://download.pytorch.org/whl/cu128
 
 # ── Triton ───────────────────────────────────────────────────
 RUN python3.12 -m pip install triton
 
 # ── Flash Attention 2.8.1 (HuggingFace hosted wheel) ─────────
-RUN python3.12 -m pip install "https://huggingface.co/VixenQuest/Wheels/resolve/main/flash_attn-2.8.1%2Bcu128torch2.9-cp312-cp312-linux_x86_64.whl"
+RUN python3.12 -m pip install "https://huggingface.co/VixenQuest/Wheels/resolve/main/flash_attn-2.8.3%2Bcu128torch2.7-cp312-cp312-linux_x86_64.whl"
 
 # ── SageAttention 3 ──────────────────────────────────────────
 RUN python3.12 -m pip install sageattention
