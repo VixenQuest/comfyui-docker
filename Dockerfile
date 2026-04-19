@@ -1,6 +1,6 @@
 # ============================================================
 # ComfyUI - Main Stable Image
-# Python 3.12 | CUDA 12.8 | PyTorch 2.9
+# Python 3.12 | CUDA 12.8 | PyTorch 2.7
 # ============================================================
 
 FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04
@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     python3.12-dev \
     python3.12-venv \
     git \
+    git-lfs \
     wget \
     curl \
     ffmpeg \
@@ -40,6 +41,9 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12 && \
     python3.12 -m pip install --upgrade pip
 
+# ── Git LFS ──────────────────────────────────────────────────
+RUN git lfs install
+
 # ── PyTorch 2.7 + CUDA 12.8 ──────────────────────────────────
 RUN python3.12 -m pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 \
     --index-url https://download.pytorch.org/whl/cu128
@@ -47,7 +51,7 @@ RUN python3.12 -m pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0
 # ── Triton ───────────────────────────────────────────────────
 RUN python3.12 -m pip install triton
 
-# ── Flash Attention 2.8.1 (HuggingFace hosted wheel) ─────────
+# ── Flash Attention 2.8.3 (HuggingFace hosted wheel) ─────────
 RUN python3.12 -m pip install "https://huggingface.co/VixenQuest/Wheels/resolve/main/flash_attn-2.8.3%2Bcu128torch2.7-cp312-cp312-linux_x86_64.whl"
 
 # ── SageAttention 3 ──────────────────────────────────────────
