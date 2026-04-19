@@ -70,9 +70,10 @@ jupyter lab \
     --port=8888 \
     --no-browser \
     --allow-root \
-    --NotebookApp.token='' \
-    --NotebookApp.password='' \
-    --notebook-dir=/workspace \
+    --ServerApp.token='' \
+    --ServerApp.password='' \
+    --ServerApp.allow_remote_access=True \
+    --ServerApp.root_dir=/workspace \
     &
 
 # Start ComfyUI
