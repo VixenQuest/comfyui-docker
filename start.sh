@@ -76,9 +76,15 @@ jupyter lab \
     --ServerApp.root_dir=/workspace \
     &
 
-# Start ComfyUI
+# Start ComfyUI (Instance 1 - port 8188)
 echo "=========================================="
-echo " Starting ComfyUI..."
+echo " Starting ComfyUI on port 8188..."
 echo "=========================================="
 cd /workspace/ComfyUI
-python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header
+python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header &
+
+# Start ComfyUI (Instance 2 - port 8189)
+echo "=========================================="
+echo " Starting ComfyUI on port 8189..."
+echo "=========================================="
+python main.py --listen 0.0.0.0 --port 8189 --enable-cors-header
