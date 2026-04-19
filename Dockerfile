@@ -212,7 +212,9 @@ RUN mkdir -p /workspace/ComfyUI/user/default/workflows && \
     wget -q -O "/workspace/ComfyUI/user/default/workflows/flux2_klein_control_net.json" \
         "https://huggingface.co/VixenQuest/Workflows/resolve/main/flux2_klein_control_net.json" && \
     wget -q -O "/workspace/ComfyUI/user/default/workflows/video_ltx2_3_id_lora.json" \
-        "https://huggingface.co/VixenQuest/Workflows/resolve/main/video_ltx2_3_id_lora.json"
+        "https://huggingface.co/VixenQuest/Workflows/resolve/main/video_ltx2_3_id_lora.json" && \
+    wget -q -O "/workspace/ComfyUI/user/default/workflows/templates_hellorob_facegen_skindetail_upscale.json" \
+        "https://huggingface.co/VixenQuest/Workflows/resolve/main/templates_hellorob_facegen_skindetail_upscale.json"
 
 # ── JupyterLab ───────────────────────────────────────────────
 RUN python3.12 -m pip install jupyterlab
