@@ -33,6 +33,23 @@ else
     echo "No network volume detected, using local storage"
 fi
 
+# ── Preloaded Workflows ──────────────────────────────────────
+echo "=========================================="
+echo " Downloading Workflows..."
+echo "=========================================="
+mkdir -p /workspace/ComfyUI/user/default/workflows
+wget -q -O "/workspace/ComfyUI/user/default/workflows/Wan Animate - Head Swap.json" \
+    "https://huggingface.co/VixenQuest/Workflows/resolve/main/Wan%20Animate%20-%20Head%20Swap.json"
+wget -q -O "/workspace/ComfyUI/user/default/workflows/X QWEN Copycat (SAM3).json" \
+    "https://huggingface.co/VixenQuest/Workflows/resolve/main/X%20QWEN%20Copycat%20(SAM3).json"
+wget -q -O "/workspace/ComfyUI/user/default/workflows/flux2_klein_control_net.json" \
+    "https://huggingface.co/VixenQuest/Workflows/resolve/main/flux2_klein_control_net.json"
+wget -q -O "/workspace/ComfyUI/user/default/workflows/video_ltx2_3_id_lora.json" \
+    "https://huggingface.co/VixenQuest/Workflows/resolve/main/video_ltx2_3_id_lora.json"
+wget -q -O "/workspace/ComfyUI/user/default/workflows/templates_hellorob_facegen_skindetail_upscale.json" \
+    "https://huggingface.co/VixenQuest/Workflows/resolve/main/templates_hellorob_facegen_skindetail_upscale.json"
+echo "✅ Workflows downloaded"
+
 # Start JupyterLab in the background
 echo "=========================================="
 echo " Starting JupyterLab..."
