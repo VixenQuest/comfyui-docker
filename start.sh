@@ -29,26 +29,37 @@ if [ -d "/runpod-volume" ]; then
         ln -s /runpod-volume/output /workspace/ComfyUI/output
         echo "✅ Output folder linked to network volume"
     fi
+
+    # Persist workflows to network volume
+    mkdir -p /runpod-volume/workflows
+    if [ ! -L "/workspace/ComfyUI/user/default/workflows" ]; then
+        rm -rf /workspace/ComfyUI/user/default/workflows
+        mkdir -p /workspace/ComfyUI/user/default
+        ln -s /runpod-volume/workflows /workspace/ComfyUI/user/default/workflows
+        echo "✅ Workflows folder linked to network volume"
+    fi
+
+    # Seed workflows from HuggingFace if the volume is empty
+    if [ -z "$(ls -A /runpod-volume/workflows 2>/dev/null)" ]; then
+        echo "Seeding initial workflows..."
+        wget -q -O "/runpod-volume/workflows/Wan Animate - Head Swap.json" \
+            "https://huggingface.co/VixenQuest/Workflows/resolve/main/Wan%20Animate%20-%20Head%20Swap.json"
+        wget -q -O "/runpod-volume/workflows/X QWEN Copycat (SAM3).json" \
+            "https://huggingface.co/VixenQuest/Workflows/resolve/main/X%20QWEN%20Copycat%20(SAM3).json"
+        wget -q -O "/runpod-volume/workflows/flux2_klein_control_net.json" \
+            "https://huggingface.co/VixenQuest/Workflows/resolve/main/flux2_klein_control_net.json"
+        wget -q -O "/runpod-volume/workflows/video_ltx2_3_id_lora.json" \
+            "https://huggingface.co/VixenQuest/Workflows/resolve/main/video_ltx2_3_id_lora.json"
+        wget -q -O "/runpod-volume/workflows/templates_hellorob_facegen_skindetail_upscale.json" \
+            "https://huggingface.co/VixenQuest/Workflows/resolve/main/templates_hellorob_facegen_skindetail_upscale.json"
+        echo "✅ Initial workflows seeded"
+    else
+        echo "✅ Workflows already on network volume, skipping seed"
+    fi
 else
     echo "No network volume detected, using local storage"
+    mkdir -p /workspace/ComfyUI/user/default/workflows
 fi
-
-# ── Preloaded Workflows ──────────────────────────────────────
-echo "=========================================="
-echo " Downloading Workflows..."
-echo "=========================================="
-mkdir -p /workspace/ComfyUI/user/default/workflows
-wget -q -O "/workspace/ComfyUI/user/default/workflows/Wan Animate - Head Swap.json" \
-    "https://huggingface.co/VixenQuest/Workflows/resolve/main/Wan%20Animate%20-%20Head%20Swap.json"
-wget -q -O "/workspace/ComfyUI/user/default/workflows/X QWEN Copycat (SAM3).json" \
-    "https://huggingface.co/VixenQuest/Workflows/resolve/main/X%20QWEN%20Copycat%20(SAM3).json"
-wget -q -O "/workspace/ComfyUI/user/default/workflows/flux2_klein_control_net.json" \
-    "https://huggingface.co/VixenQuest/Workflows/resolve/main/flux2_klein_control_net.json"
-wget -q -O "/workspace/ComfyUI/user/default/workflows/video_ltx2_3_id_lora.json" \
-    "https://huggingface.co/VixenQuest/Workflows/resolve/main/video_ltx2_3_id_lora.json"
-wget -q -O "/workspace/ComfyUI/user/default/workflows/templates_hellorob_facegen_skindetail_upscale.json" \
-    "https://huggingface.co/VixenQuest/Workflows/resolve/main/templates_hellorob_facegen_skindetail_upscale.json"
-echo "✅ Workflows downloaded"
 
 # Start JupyterLab in the background
 echo "=========================================="
