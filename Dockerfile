@@ -204,7 +204,7 @@ RUN git clone https://github.com/sonnybox/ComfyUI-SuperNodes.git \
 RUN git config --global --unset-all url."https://${GITHUB_TOKEN}@github.com/".insteadOf || true
 
 # ── JupyterLab ───────────────────────────────────────────────
-RUN python3.12 -m pip install jupyterlab
+RUN python3.12 -m pip install jupyterlab terminado
 
 # ── Start script ─────────────────────────────────────────────
 COPY start.sh /start.sh
