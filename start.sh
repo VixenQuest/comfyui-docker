@@ -7,8 +7,8 @@ echo "=========================================="
 echo " Starting ComfyUI..."
 echo "=========================================="
 
-# If a network volume is mounted, symlink models folder to it
-# so models persist between sessions
+# If a network volume is mounted, symlink folders to it
+# Existing folders are never deleted — symlinks are created only if not already present
 if [ -d "/runpod-volume" ]; then
     echo "Network volume detected at /runpod-volume"
 
@@ -17,26 +17,47 @@ if [ -d "/runpod-volume" ]; then
 
     # Symlink ComfyUI models folder to the network volume
     if [ ! -L "/workspace/ComfyUI/models" ]; then
-        rm -rf /workspace/ComfyUI/models
         ln -s /runpod-volume/models /workspace/ComfyUI/models
         echo "✅ Models folder linked to network volume"
+    else
+        echo "✅ Models symlink already exists, skipping"
     fi
 
     # Also persist outputs to network volume
     mkdir -p /runpod-volume/output
     if [ ! -L "/workspace/ComfyUI/output" ]; then
-        rm -rf /workspace/ComfyUI/output
         ln -s /runpod-volume/output /workspace/ComfyUI/output
         echo "✅ Output folder linked to network volume"
+    else
+        echo "✅ Output symlink already exists, skipping"
+    fi
+
+    # Persist input to network volume
+    mkdir -p /runpod-volume/input
+    if [ ! -L "/workspace/ComfyUI/input" ]; then
+        ln -s /runpod-volume/input /workspace/ComfyUI/input
+        echo "✅ Input folder linked to network volume"
+    else
+        echo "✅ Input symlink already exists, skipping"
+    fi
+
+    # Persist custom_nodes to network volume
+    mkdir -p /runpod-volume/custom_nodes
+    if [ ! -L "/workspace/ComfyUI/custom_nodes" ]; then
+        ln -s /runpod-volume/custom_nodes /workspace/ComfyUI/custom_nodes
+        echo "✅ custom_nodes folder linked to network volume"
+    else
+        echo "✅ custom_nodes symlink already exists, skipping"
     fi
 
     # Persist workflows to network volume
     mkdir -p /runpod-volume/workflows
     if [ ! -L "/workspace/ComfyUI/user/default/workflows" ]; then
-        rm -rf /workspace/ComfyUI/user/default/workflows
         mkdir -p /workspace/ComfyUI/user/default
         ln -s /runpod-volume/workflows /workspace/ComfyUI/user/default/workflows
         echo "✅ Workflows folder linked to network volume"
+    else
+        echo "✅ Workflows symlink already exists, skipping"
     fi
 
     # Seed workflows from HuggingFace if the volume is empty
@@ -76,12 +97,12 @@ jupyter lab \
     --ServerApp.root_dir=/workspace \
     &
 
-# Start ComfyUI (Instance 1 - port 8188)
+# Start ComfyUI (Instance 1 - port 8188, SageAttention enabled)
 echo "=========================================="
 echo " Starting ComfyUI on port 8188..."
 echo "=========================================="
 cd /workspace/ComfyUI
-python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header &
+python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header --use-sage-attention &
 
 # Start ComfyUI (Instance 2 - port 8189)
 echo "=========================================="
